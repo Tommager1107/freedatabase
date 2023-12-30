@@ -1,4 +1,5 @@
 # freedatabase
+# Installer works only on windows 10 / If you have older or newer version pleas dowload code as zip and run server.py
 FreeDatabase README
 Welcome to TBD-FreeDatabase – Your Secure File Storage Solution
 
