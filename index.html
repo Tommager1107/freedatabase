@@ -1,0 +1,584 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TBD-FreeDatabase</title>
+  <style>
+  body {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  header {
+    background-color: #333;
+    color: #00bcd4;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  h1, h2 {
+    color: #64b5f6;
+  }
+
+  h2 {
+    margin: 5px 0;
+  }
+
+  main {
+    margin: 20px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  footer {
+    background-color: #333;
+    color: #00bcd4;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  nav {
+    background-color: #333;
+    overflow: hidden;
+    width: 80px; /* Adjust the width as needed */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav a {
+    display: block;
+    color: #00bcd4;
+    text-align: center;
+    padding: 16px 0; /* Adjust the padding as needed */
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  nav a:hover {
+    background-color: #555;
+    color: #ffffff;
+  }
+
+  #homeContent, #databaseContent, #configContent, #loginContent {
+    display: none;
+  }
+
+  #homeContent.show, #databaseContent.show, #configContent.show, #loginContent.show {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .home-info {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .why-choose-us {
+    background-color: #333;
+    color: #00bcd4;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+  }
+
+  #configContent {
+    display: none;
+  }
+
+  #configContent.show {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #configContent input,
+  #configContent select,
+  #dataInput,
+  #loginInput,
+  #removeDropdown {
+    margin-bottom: 10px;
+    padding: 5px;
+  }
+
+  #addButton,
+  #removeButton,
+  #githubButton,
+  #loginButton {
+    padding: 10px;
+    background-color: #333;
+    color: #00bcd4;
+    border: none;
+    cursor: pointer;
+  }
+
+  #addButton:hover,
+  #removeButton:hover,
+  #githubButton:hover,
+  #loginButton:hover {
+    background-color: #555;
+  }
+
+  #dataList {
+    text-align: center;
+  }
+
+  #loginContent.show {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #githubButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #00bcd4;
+  }
+
+  #githubButton:hover {
+    background-color: #555;
+    color: #ffffff;
+  }
+  #dataInput {
+      display: none; /* Hide the text input */
+    }
+
+    #fileInput {
+      margin-bottom: 10px;
+      padding: 5px;
+      background-color: #333;
+      color: #00bcd4;
+      border: none;
+      cursor: pointer;
+    }
+
+    #fileInput:hover {
+      background-color: #555;
+    }
+
+    .file-list {
+      text-align: center;
+    }
+
+    .file-item {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #333;
+      color: #00bcd4;
+      border-radius: 5px;
+    }
+
+    .file-item:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <a onclick="showHomeContent()">Home</a>
+    <a onclick="showDatabaseContent()">Database</a>
+    <a onclick="showConfigContent()">Config</a>
+    <a onclick="showLoginContent()">Login</a>
+  </nav>
+  <header>Free Database</header>
+  <main>
+    <div id="homeContent" class="show">
+      <!-- Home Content -->
+      <div class="home-info">
+        <h1>Welcome to Free Database made by TBotDevelopment</h1>
+        <p>Your ultimate choice for secure and efficient data management on Windows.</p>
+        <a href="https://github.com/Tommager1107/freedatabase" target="_blank">
+          <button style="padding: 10px; background-color: #333; color: #00bcd4; border: none; cursor: pointer;">
+            View on GitHub
+          </button>
+        </a>
+      </div>
+      <div class="why-choose-us">
+        <h2>Why Choose Us?</h2>
+        <ul>
+          <li>Robust and Secure: Our database system ensures the utmost security for your data.</li>
+          <li>User-Friendly: Easy-to-use interface, making data management a breeze.</li>
+          <li>Reliable Performance: Experience consistent and reliable performance for your applications.</li>
+        </ul>
+      </div>
+    </div>
+    <div id="databaseContent">
+      <!-- Database Content -->
+      <div id="dataList">
+        <h2>Data in Database:</h2>
+        <!-- Data will be displayed here -->
+      </div>
+      <input type="file" id="fileInput" onchange="handleFileSelect()" accept=".txt, .json, .js, .py, .png, .jpg, .jpeg">
+      <div id="fileList" class="file-list">
+        <h2>Files in Database:</h2>
+        <!-- File items will be displayed here -->
+      </div>
+    </div>
+    <div id="configContent" class="show">
+      <!-- Config Content -->
+      <h1>Configuration</h1>
+    <input type="text" id="dataInput" placeholder="Enter new data...">
+    <button id="addButton" onclick="addData()">Add Data</button> 
+     <h2>Upload File</h2>
+    <input type="file" id="fileUploadInput" onchange="handleFileUpload()" accept=".txt, .json, .js, .py, .png, .jpg, .jpeg">
+      <h2>Remove Data</h2>
+    <select id="removeDropdown"></select>
+    <button id="removeButton" onclick="removeData()">Remove Selected</button>
+  </div>
+    <div id="loginContent" class="show">
+      <!-- Login Content -->
+      <h1>Login</h1>
+      <input type="text" id="loginInput" placeholder="Enter your login key...">
+      <button id="loginButton" onclick="login()">Login</button>
+    </div>
+  </main>
+  <!-- Add your script tag here -->
+  <script>
+
+async function fetchKeys() {
+    try {
+      const response = await fetch('keys.json');
+      const data = await response.json();
+      return data.validKeys || [];
+    } catch (error) {
+      console.error('Error fetching keys:', error);
+      return [];
+    }
+  }
+
+function showHomeContent() {
+  document.getElementById('homeContent').classList.add('show');
+  document.getElementById('databaseContent').classList.remove('show');
+  document.getElementById('configContent').classList.remove('show');
+  document.getElementById('loginContent').classList.remove('show');
+}
+
+function showDatabaseContent() {
+  document.getElementById('homeContent').classList.remove('show');
+  document.getElementById('databaseContent').classList.add('show');
+  document.getElementById('configContent').classList.remove('show');
+  document.getElementById('loginContent').classList.remove('show');
+
+  // Update both data and file lists when switching to the database tab
+  updateDataList();
+  updateFileList();
+}
+
+function showConfigContent() {
+  document.getElementById('homeContent').classList.remove('show');
+  document.getElementById('databaseContent').classList.remove('show');
+  document.getElementById('configContent').classList.add('show');
+  document.getElementById('loginContent').classList.remove('show');
+  updateRemoveDropdown(); // Update the remove data dropdown on tab switch
+}
+
+function showLoginContent() {
+  document.getElementById('homeContent').classList.remove('show');
+  document.getElementById('databaseContent').classList.remove('show');
+  document.getElementById('configContent').classList.remove('show');
+  document.getElementById('loginContent').classList.add('show');
+}
+
+  async function login() {
+    const loginInput = document.getElementById('loginInput');
+    const key = loginInput.value.trim();
+
+    if (key) {
+      const validKeys = await fetchKeys();
+
+      // Check if the key is valid
+      if (validKeys.includes(key)) {
+        // Successful login, show the appropriate content
+        showHomeContent();
+      } else {
+        alert('Invalid login key. Please try again.');
+      }
+    } else {
+      alert('Please enter a login key.');
+    }
+  }
+
+  function addData() {
+    const inputElement = document.getElementById('dataInput');
+    const data = inputElement.value.trim();
+    const key = document.getElementById('loginInput').value.trim();
+
+    if (key && data) {
+      // Save data to local storage using a key-specific identifier
+      const existingData = localStorage.getItem(`databaseData_${key}`) || '[]';
+      const dataArray = JSON.parse(existingData);
+      dataArray.push(data);
+      localStorage.setItem(`databaseData_${key}`, JSON.stringify(dataArray));
+
+      // Clear input
+      inputElement.value = '';
+
+      // Update the displayed list
+      updateDataList();
+      updateRemoveDropdown();
+    }
+  }
+
+  function updateDataList() {
+    const dataListElement = document.getElementById('dataList');
+    const key = document.getElementById('loginInput').value.trim();
+    const data = localStorage.getItem(`databaseData_${key}`) || '[]';
+    const dataArray = JSON.parse(data);
+
+    // Display the data
+    dataListElement.innerHTML = '<h2>Data in Database:</h2>';
+    dataArray.forEach((item, index) => {
+      dataListElement.innerHTML += `<p>${index + 1}. ${item}</p>`;
+    });
+  }
+
+  function updateRemoveDropdown() {
+    const removeDropdown = document.getElementById('removeDropdown');
+    const key = document.getElementById('loginInput').value.trim();
+    const data = localStorage.getItem(`databaseData_${key}`) || '[]';
+    const dataArray = JSON.parse(data);
+
+    // Clear previous options
+    removeDropdown.innerHTML = '';
+
+    // Add new options
+    dataArray.forEach((item, index) => {
+      const option = document.createElement('option');
+      option.value = index;
+      option.text = `${index + 1}. ${item}`;
+      removeDropdown.add(option);
+    });
+  }
+
+  function removeData() {
+    const removeDropdown = document.getElementById('removeDropdown');
+    const selectedIndex = removeDropdown.value;
+    const key = document.getElementById('loginInput').value.trim();
+
+    if (selectedIndex !== null && selectedIndex !== undefined) {
+      // Remove selected data from local storage
+      const data = localStorage.getItem(`databaseData_${key}`) || '[]';
+      const dataArray = JSON.parse(data);
+      dataArray.splice(selectedIndex, 1);
+      localStorage.setItem(`databaseData_${key}`, JSON.stringify(dataArray));
+
+      // Update the displayed list and remove data dropdown
+      updateDataList();
+      updateRemoveDropdown();
+    }
+  }
+ function handleFileSelect() {
+    const fileInput = document.getElementById('fileInput');
+    const key = document.getElementById('loginInput').value.trim();
+
+    if (fileInput.files.length > 0 && key) {
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        const fileContent = e.target.result;
+        saveFileToDatabase(fileContent, key, file.name);
+        updateFileList();
+      };
+
+      reader.readAsText(file);
+    }
+  }
+
+  function saveFileToDatabase(content, key, fileName) {
+    const existingFiles = localStorage.getItem(`databaseFiles_${key}`) || '[]';
+    const filesArray = JSON.parse(existingFiles);
+    const newFile = { name: fileName, content: content };
+    filesArray.push(newFile);
+    localStorage.setItem(`databaseFiles_${key}`, JSON.stringify(filesArray));
+  }
+
+  function updateFileList() {
+    const fileListElement = document.getElementById('fileList');
+    const key = document.getElementById('loginInput').value.trim();
+    const files = localStorage.getItem(`databaseFiles_${key}`) || '[]';
+    const filesArray = JSON.parse(files);
+
+    // Display the files
+    fileListElement.innerHTML = '<h2>Files in Database:</h2>';
+    filesArray.forEach((file, index) => {
+      fileListElement.innerHTML += `<div class="file-item" onclick="viewFile(${index})">${index + 1}. ${file.name}</div>`;
+    });
+  }
+
+  function viewFile(index) {
+    const key = document.getElementById('loginInput').value.trim();
+    const files = localStorage.getItem(`databaseFiles_${key}`) || '[]';
+    const filesArray = JSON.parse(files);
+    const selectedFile = filesArray[index];
+
+    if (selectedFile) {
+      alert(`Content of ${selectedFile.name}:\n\n${selectedFile.content}`);
+    }
+  }
+  
+ function handleFileUpload() {
+      const fileInput = document.getElementById('fileUploadInput');
+      const key = document.getElementById('loginInput').value.trim();
+
+      if (fileInput.files.length > 0 && key) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          const fileContent = e.target.result;
+          saveFileToDatabase(fileContent, key, file.name);
+          updateFileList();
+        };
+
+        reader.readAsText(file);
+      }
+    }
+
+    // Function to save the uploaded file to the database
+    function saveFileToDatabase(content, key, fileName) {
+      const existingFiles = localStorage.getItem(`databaseFiles_${key}`) || '[]';
+      const filesArray = JSON.parse(existingFiles);
+      const newFile = { name: fileName, content: content };
+      filesArray.push(newFile);
+      localStorage.setItem(`databaseFiles_${key}`, JSON.stringify(filesArray));
+    }
+
+    // Function to update the file list in the UI
+   function updateFileList() {
+  const fileListElement = document.getElementById('fileList');
+  const key = document.getElementById('loginInput').value.trim();
+  const files = localStorage.getItem(`databaseFiles_${key}`) || '[]';
+  const filesArray = JSON.parse(files);
+
+  // Display the files with download buttons
+  fileListElement.innerHTML = '<h2>Files in Database:</h2>';
+  filesArray.forEach((file, index) => {
+    const fileItem = document.createElement('div');
+    fileItem.className = 'file-item';
+
+    // Display file name and add download button
+    fileItem.innerHTML = `<span>${index + 1}. ${file.name}</span>`;
+    const downloadButton = document.createElement('button');
+    downloadButton.innerText = 'Download';
+    downloadButton.onclick = () => downloadFile(index);
+    fileItem.appendChild(downloadButton);
+
+    // Add file item to the file list
+    fileListElement.appendChild(fileItem);
+  });
+}
+
+    // Function to view the content of a selected file
+    function viewFile(index) {
+      const key = document.getElementById('loginInput').value.trim();
+      const files = localStorage.getItem(`databaseFiles_${key}`) || '[]';
+      const filesArray = JSON.parse(files);
+      const selectedFile = filesArray[index];
+
+      if (selectedFile) {
+        alert(`Content of ${selectedFile.name}:\n\n${selectedFile.content}`);
+      }
+    }
+ function updateRemoveDropdown() {
+    const removeDropdown = document.getElementById('removeDropdown');
+    const key = document.getElementById('loginInput').value.trim();
+    const data = localStorage.getItem(`databaseData_${key}`) || '[]';
+    const dataArray = JSON.parse(data);
+
+    const files = localStorage.getItem(`databaseFiles_${key}`) || '[]';
+    const filesArray = JSON.parse(files);
+
+    // Clear previous options
+    removeDropdown.innerHTML = '';
+
+    // Add data options
+    dataArray.forEach((item, index) => {
+      const option = document.createElement('option');
+      option.value = `data_${index}`;
+      option.text = `${index + 1}. Data: ${item}`;
+      removeDropdown.add(option);
+    });
+
+    // Add file options
+    filesArray.forEach((file, index) => {
+      const option = document.createElement('option');
+      option.value = `file_${index}`;
+      option.text = `${index + 1}. File: ${file.name}`;
+      removeDropdown.add(option);
+    });
+  }
+
+  function removeData() {
+    const removeDropdown = document.getElementById('removeDropdown');
+    const selectedItem = removeDropdown.value;
+    const key = document.getElementById('loginInput').value.trim();
+
+    if (selectedItem !== null && selectedItem !== undefined) {
+      const [type, index] = selectedItem.split('_');
+      
+      if (type === 'data') {
+        // Remove selected data from local storage
+        const data = localStorage.getItem(`databaseData_${key}`) || '[]';
+        const dataArray = JSON.parse(data);
+        dataArray.splice(index, 1);
+        localStorage.setItem(`databaseData_${key}`, JSON.stringify(dataArray));
+      } else if (type === 'file') {
+        // Remove selected file from local storage
+        const files = localStorage.getItem(`databaseFiles_${key}`) || '[]';
+        const filesArray = JSON.parse(files);
+        filesArray.splice(index, 1);
+        localStorage.setItem(`databaseFiles_${key}`, JSON.stringify(filesArray));
+      }
+
+      // Update the displayed list and remove data dropdown
+      updateDataList();
+      updateFileList();
+      updateRemoveDropdown();
+    }
+  }
+function downloadFile(index) {
+  const key = document.getElementById('loginInput').value.trim();
+  const files = localStorage.getItem(`databaseFiles_${key}`) || '[]';
+  const filesArray = JSON.parse(files);
+  const selectedFile = filesArray[index];
+
+  if (selectedFile) {
+    const blob = new Blob([selectedFile.content], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = selectedFile.name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }
+}
+
+  </script>
+  <footer>TBotDevelopment database - 2023</footer>
+  </body>
+
+  </html>
+
